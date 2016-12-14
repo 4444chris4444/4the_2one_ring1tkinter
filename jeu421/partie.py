@@ -143,7 +143,7 @@ class Partie:
         Une fois la charge terminé, la décharge débute par le dernier perdant de la charge.
         Le jeu se termine dès qu'un joueur a tous les jetons de la partie
         """
-        #Partie.création_fichier_données(self)
+        Partie.création_ficher_données(self)
         self.determiner_premier_lanceur()
         terminer = False
         Partie.interface.afficher("*{:^40s}*".format("Début de la charge"))
@@ -226,19 +226,19 @@ class Partie:
         assert self.premier < self.nb_joueurs
 
 
-    """
+
     def création_ficher_données(self):
-        "
+        """
         Permet d'enregistrer divers attributs d'objets de joueurs dans un ficher text tout au long de l'exécution du programme
 
-        "
+        """
         fichier_stats = open("421_statistiques.txt", "w")   #Créer et ouvre un .txt en écriture
         for j in (self.joueurs):                            #Inscrit les noms des joueurs dans le .txt
-            infos_joueur = "Nom: " + str(j.nom) + "\n"
+            infos_joueur = "Nom: " + str(j.nom) + "Premier lancer :" + "Nombre de jetons" + "\n"
             fichier_stats.write(infos_joueur)
            # for i in (self.joueurs):
         fichier_stats.close()
-    """
+
     #def obtenir_stats(self):
 
 
