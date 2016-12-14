@@ -183,3 +183,5 @@ class JoueurAlgo(Joueur):
         return combinaison_finale
 
 print(JoueurAlgo.choix_421(tri=True))
+
+print("ok")
