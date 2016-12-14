@@ -131,3 +131,55 @@ class Joueur:
     def verifier_invariants(self):
         assert 0 <= self.nb_jetons <= NOMBRE_DE_JETONS_DU_JEU, "Le nombre de jetons du joueur est incorrect"
 
+class JoueurAlgo(Joueur):
+    """
+    Classe représentant un joueur fictif qui applique une stratégie de type 1. Il visera donc toujours à obtenir la
+    combinaison du 421. Cette classe hérite de la classe Joueur.
+    """
+    def __init__(self):
+
+
+
+        super().__init__(self)
+
+    def choix_421(tri=False):
+        """
+        Fonction qui simule un lancer lorsque l'utilisateur a choisi la combinaison 421.
+        :param tri: (bool) Si True, on trie les couples.
+        :return: (list) Résultat des lancés de dés.
+        """
+        combinaison_gagnante = [4, 2, 1]
+        combinaison_finale = []
+        nombre_tirage = 0
+        lancer_1 = ""
+        lancer_2 = ""
+        lancer_3 = ""
+        while nombre_tirage != 3:
+            # On ne veut pas faire plus que 3 lancers.
+            tirage = Joueur.lancer_des(Joueur, 3-len(combinaison_finale))
+            nombre_tirage += 1
+            if nombre_tirage == 1:
+                lancer_1 = tirage
+                for i in range(len(tirage)):
+                    if tirage[i] in combinaison_gagnante:
+                        if tirage[i] not in combinaison_finale:
+                            # On ne veut garder qu'un 4, un 2 et un 1.
+                            combinaison_finale.append(tirage[i])
+            elif nombre_tirage == 2:
+                lancer_2 = tirage
+
+                for i in range(len(tirage)):
+                    if tirage[i] in combinaison_gagnante:
+                        if tirage[i] not in combinaison_finale:
+                            # On ne veut garder qu'un 4, un 2 et un 1.
+                            combinaison_finale.append(tirage[i])
+            elif nombre_tirage == 3:
+                # Si c'est le dernier lancer, on est pris avec nos derniers résultats.
+                lancer_3 = tirage
+                for i in range(len(tirage)):
+                    combinaison_finale.append(tirage[i])
+        if tri:
+            combinaison_finale.sort(reverse=True)
+        return combinaison_finale
+
+print(JoueurAlgo.choix_421(tri=True))
