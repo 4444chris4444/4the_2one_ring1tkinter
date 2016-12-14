@@ -18,3 +18,4 @@ if __name__ == "__main__":
         else:
             jeu = Partie(nombre_joueur)
             jeu.jouer()
+
