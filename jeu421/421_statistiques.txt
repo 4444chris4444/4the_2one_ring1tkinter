@@ -1,0 +1,4 @@
+Nom: Joueur1Premier lancer :Nombre de jetons
+Nom: Joueur2Premier lancer :Nombre de jetons
+Nom: Joueur3Premier lancer :Nombre de jetons
+Nom: Joueur4Premier lancer :Nombre de jetons

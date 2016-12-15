@@ -1,13 +1,11 @@
-from tkinter import Tk, Label, Button
+from tkinter import *
 
-def interface():
-    root = Tk()
-    titre = Label(root, text="---- JEU 421 ----")
+def accueil():
+    fen1 = Tk()
+    titre = Label(fen1, text="---- JEU 421 ----")
     titre.grid(padx=250, pady=250)
-    bouton = Button(root, text="Continuer")
+    bouton = Button(fen1, text="Continuer", command= fen1.destroy)
     bouton.grid()
+    fen1.mainloop()
 
-    root.mainloop()
-
-
-interface()
+accueil()

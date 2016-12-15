@@ -182,6 +182,6 @@ class JoueurAlgo(Joueur):
             combinaison_finale.sort(reverse=True)
         return combinaison_finale
 
-print(JoueurAlgo.choix_421(tri=True))
+#print(JoueurAlgo.choix_421(tri=True))
 
-print("ok")
+#print("ok")
