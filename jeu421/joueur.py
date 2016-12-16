@@ -43,13 +43,13 @@ class Joueur:
         i = 0
         nb_des_a_lancer = NOMBRE_DES_DU_JEU
         resultat_lancer = []
-        if self.nom == 'Ordinateur':
-            resultat_lancer = JoueurAlgo.choix_421(JoueurAlgo, nb_maximum_lancer)
-            self.combinaison_actuelle = Combinaison(resultat_lancer)
-            Joueur.interface.afficher("Combinaison finale = {}, soit {} points".format(self.combinaison_actuelle,
-                                                                                       self.combinaison_actuelle.valeur))
-        else:
-            while (not objectif_est_atteint) and (i < nb_maximum_lancer):
+
+        while (not objectif_est_atteint) and (i < nb_maximum_lancer):
+            if self.nom == 'Ordinateur':
+                resultat_lancer = JoueurAlgo.choix_421(self, nb_maximum_lancer)
+                self.combinaison_actuelle = Combinaison(resultat_lancer)
+                i=3
+            else:
                 Joueur.interface.demander_entree("Appuyer sur la touche Enter pour lancer!")
                 temp = self.lancer_des(nb_des_a_lancer)
                 Joueur.interface.afficher("Lancé {} = {}".format(i+1, temp))
@@ -63,10 +63,10 @@ class Joueur:
                     else:
                         for v in des_a_relancer:
                             resultat_lancer.remove(v)
-                i += 1
-            self.combinaison_actuelle = Combinaison(resultat_lancer)
-            Joueur.interface.afficher("Combinaison finale = {}, soit {} points".format(self.combinaison_actuelle,
-                                                               self.combinaison_actuelle.valeur))
+            i += 1
+        self.combinaison_actuelle = Combinaison(resultat_lancer)
+        Joueur.interface.afficher("Combinaison finale = {}, soit {} points".format(self.combinaison_actuelle,
+                                                           self.combinaison_actuelle.valeur))
         return i
 
     def ajouter_jetons(self, nb_jetons):
@@ -144,8 +144,6 @@ class JoueurAlgo(Joueur):
     """
     def __init__(self):
 
-
-
         super().__init__(self)
 
     def choix_421(self, nb_lancer_max):
@@ -155,18 +153,20 @@ class JoueurAlgo(Joueur):
         :return: (list) Résultat des lancés de dés.
         """
         self.nb_lancer_max = nb_lancer_max
+        nb_des_a_lancer = NOMBRE_DES_DU_JEU
         combinaison_gagnante = [4, 2, 1]
         combinaison_actuelle = []
         nombre_tirage = 0
+        i = 0
         lancers_max = self.nb_lancer_max
         while nombre_tirage != lancers_max:
             # On ne veut pas faire plus que 3 lancers.
-            tirage = Joueur.lancer_des(Joueur, 3-len(combinaison_actuelle))
+            tirage = self.lancer_des(nb_des_a_lancer-len(combinaison_actuelle))
             nombre_tirage += 1
             Joueur.interface.afficher("Lancé {} = {}".format(nombre_tirage, tirage))
             if nb_lancer_max == 1:
                 combinaison_actuelle = tirage
-            elif nombre_tirage == 1:
+            elif nombre_tirage >= 1:
                 lancer_1 = tirage
                 for i in range(len(tirage)):
                     if tirage[i] in combinaison_gagnante:
@@ -183,8 +183,8 @@ class JoueurAlgo(Joueur):
                 for i in range(len(tirage)):
                     combinaison_actuelle.append(tirage[i])
         combinaison_actuelle.sort(reverse=True)
+        self.combinaison_actuelle = combinaison_actuelle
         Joueur.combinaison_actuelle = Combinaison(combinaison_actuelle)
-
         return combinaison_actuelle
 
 #cpu_1 = JoueurAlgo(2)
