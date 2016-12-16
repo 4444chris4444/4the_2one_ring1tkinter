@@ -43,23 +43,29 @@ class Joueur:
         i = 0
         nb_des_a_lancer = NOMBRE_DES_DU_JEU
         resultat_lancer = []
-        while (not objectif_est_atteint) and (i < nb_maximum_lancer):
-            Joueur.interface.demander_entree("Appuyer sur la touche Enter pour lancer!")
-            temp = self.lancer_des(nb_des_a_lancer)
-            Joueur.interface.afficher("Lancé {} = {}".format(i+1, temp))
-            resultat_lancer += temp
-            possibilte_de_relancer = (i < nb_maximum_lancer - 1)
-            if possibilte_de_relancer:
-                des_a_relancer = Joueur.interface.choisir_des_a_relancer(resultat_lancer)
-                nb_des_a_lancer = len(des_a_relancer)
-                if des_a_relancer == []:
-                    objectif_est_atteint = True
-                else:
-                    for v in des_a_relancer:
-                        resultat_lancer.remove(v)
-            i += 1
-        self.combinaison_actuelle = Combinaison(resultat_lancer)
-        Joueur.interface.afficher("Combinaison finale = {}, soit {} points".format(self.combinaison_actuelle,
+        if self.nom == 'Ordinateur':
+            resultat_lancer = JoueurAlgo.choix_421(JoueurAlgo, nb_maximum_lancer)
+            self.combinaison_actuelle = Combinaison(resultat_lancer)
+            Joueur.interface.afficher("Combinaison finale = {}, soit {} points".format(self.combinaison_actuelle,
+                                                                                       self.combinaison_actuelle.valeur))
+        else:
+            while (not objectif_est_atteint) and (i < nb_maximum_lancer):
+                Joueur.interface.demander_entree("Appuyer sur la touche Enter pour lancer!")
+                temp = self.lancer_des(nb_des_a_lancer)
+                Joueur.interface.afficher("Lancé {} = {}".format(i+1, temp))
+                resultat_lancer += temp
+                possibilte_de_relancer = (i < nb_maximum_lancer - 1)
+                if possibilte_de_relancer:
+                    des_a_relancer = Joueur.interface.choisir_des_a_relancer(resultat_lancer)
+                    nb_des_a_lancer = len(des_a_relancer)
+                    if des_a_relancer == []:
+                        objectif_est_atteint = True
+                    else:
+                        for v in des_a_relancer:
+                            resultat_lancer.remove(v)
+                i += 1
+            self.combinaison_actuelle = Combinaison(resultat_lancer)
+            Joueur.interface.afficher("Combinaison finale = {}, soit {} points".format(self.combinaison_actuelle,
                                                                self.combinaison_actuelle.valeur))
         return i
 
@@ -142,46 +148,46 @@ class JoueurAlgo(Joueur):
 
         super().__init__(self)
 
-    def choix_421(tri=False):
+    def choix_421(self, nb_lancer_max):
         """
         Fonction qui simule un lancer lorsque l'utilisateur a choisi la combinaison 421.
         :param tri: (bool) Si True, on trie les couples.
         :return: (list) Résultat des lancés de dés.
         """
+        self.nb_lancer_max = nb_lancer_max
         combinaison_gagnante = [4, 2, 1]
-        combinaison_finale = []
+        combinaison_actuelle = []
         nombre_tirage = 0
-        lancer_1 = ""
-        lancer_2 = ""
-        lancer_3 = ""
-        while nombre_tirage != 3:
+        lancers_max = self.nb_lancer_max
+        while nombre_tirage != lancers_max:
             # On ne veut pas faire plus que 3 lancers.
-            tirage = Joueur.lancer_des(Joueur, 3-len(combinaison_finale))
+            tirage = Joueur.lancer_des(Joueur, 3-len(combinaison_actuelle))
             nombre_tirage += 1
-            if nombre_tirage == 1:
+            Joueur.interface.afficher("Lancé {} = {}".format(nombre_tirage, tirage))
+            if nb_lancer_max == 1:
+                combinaison_actuelle = tirage
+            elif nombre_tirage == 1:
                 lancer_1 = tirage
                 for i in range(len(tirage)):
                     if tirage[i] in combinaison_gagnante:
-                        if tirage[i] not in combinaison_finale:
+                        if tirage[i] not in combinaison_actuelle:
                             # On ne veut garder qu'un 4, un 2 et un 1.
-                            combinaison_finale.append(tirage[i])
-            elif nombre_tirage == 2:
-                lancer_2 = tirage
-
+                            combinaison_actuelle.append(tirage[i])
                 for i in range(len(tirage)):
                     if tirage[i] in combinaison_gagnante:
-                        if tirage[i] not in combinaison_finale:
+                        if tirage[i] not in combinaison_actuelle:
                             # On ne veut garder qu'un 4, un 2 et un 1.
-                            combinaison_finale.append(tirage[i])
-            elif nombre_tirage == 3:
+                            combinaison_actuelle.append(tirage[i])
+            elif nombre_tirage == lancers_max:
                 # Si c'est le dernier lancer, on est pris avec nos derniers résultats.
-                lancer_3 = tirage
                 for i in range(len(tirage)):
-                    combinaison_finale.append(tirage[i])
-        if tri:
-            combinaison_finale.sort(reverse=True)
-        return combinaison_finale
+                    combinaison_actuelle.append(tirage[i])
+        combinaison_actuelle.sort(reverse=True)
+        Joueur.combinaison_actuelle = Combinaison(combinaison_actuelle)
 
-#print(JoueurAlgo.choix_421(tri=True))
+        return combinaison_actuelle
 
-#print("ok")
+#cpu_1 = JoueurAlgo(2)
+#print(cpu_1.choix_421(tri=True))
+
+

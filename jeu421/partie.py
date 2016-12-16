@@ -1,6 +1,7 @@
 from jeu421.interface import Interface
 from jeu421.combinaison import *
 from jeu421.joueur import Joueur
+from jeu421.joueur import JoueurAlgo
 import os
 
 
@@ -15,16 +16,23 @@ class Partie:
     """
     interface = Interface()
 
-    def __init__(self, nb_joueurs):
+    def __init__(self, nb_joueurs, nb_cpu):
         """
         Constructeur de la classe. Vous devez initialisez les attributs
         :param nb_joueurs: le nombre de joueur de la partie
         """
         assert nb_joueurs >= 2, "Il faut au moins deux joueurs pour une partie de 421"
+        self.nb_cpu = nb_cpu
         self.nb_joueurs = nb_joueurs
-        self.joueurs = [Joueur("Joueur{}".format(i+1)) for i in range(nb_joueurs)]
+        self.nb_total_joueurs = nb_cpu + nb_joueurs
+        if nb_cpu == 0:
+            self.joueurs = [Joueur("Joueur{}".format(i+1)) for i in range(nb_joueurs)]
+        else:
+            self.joueurs = [Joueur("Joueur{}".format(i + 1)) for i in range(nb_joueurs)]
+            self.joueurs.append((Joueur("Ordinateur")))
         self.nb_jetons_du_pot = NOMBRE_DE_JETONS_DU_JEU
         self.premier = 0
+
 
     def determiner_premier_lanceur(self):
         """
@@ -36,12 +44,12 @@ class Partie:
         :return:
         """
         Partie.interface.afficher("*{:^40s}*".format("Détermination du premier joueur"))
-        concernes = list(range(self.nb_joueurs))
+        concernes = list(range(self.nb_total_joueurs))
         while len(concernes) > 1:
             best_valeur = 7
             premiers = []
             for i in concernes:
-                Partie.interface.demander_entree("Tour du {}: Appuyer sur la touche"
+                Partie.interface.demander_entree("Tour de {}: Appuyer sur la touche"
                                                  " Enter pour lancer!".format(self.joueurs[i].nom))
                 valeur = self.joueurs[i].lancer_des(1)[0]
                 Partie.interface.afficher("Résultat du lancer:{}\n".format(valeur))
@@ -55,7 +63,7 @@ class Partie:
             if len(concernes) > 1:
                 Partie.interface.afficher("Égalité entre les joueurs: {}".format(", ".join([str(i+1) for i in concernes])))
         self.premier = concernes[0]
-        Partie.interface.afficher("Le {} sera le premier lanceur\n".format(self.joueurs[self.premier].nom))
+        Partie.interface.afficher("{} sera le premier lanceur\n".format(self.joueurs[self.premier].nom))
 
     def jouer_tour_premiere_phase(self):
         """
@@ -66,8 +74,8 @@ class Partie:
         :return: un tuple d'entier qui correspond à l'index du perdant et celui du gagnant du tour
         """
         nb_maximum_lancer = 1
-        for i in range(self.nb_joueurs):
-            pos = (self.premier+i) % self.nb_joueurs
+        for i in range(self.nb_total_joueurs):
+            pos = (self.premier+i) % self.nb_total_joueurs
             Partie.interface.afficher("Tour du {}".format(self.joueurs[pos].nom))
             self.joueurs[pos].jouer_tour(nb_maximum_lancer=nb_maximum_lancer)
 
@@ -108,10 +116,10 @@ class Partie:
         :return: un tuple d'entier qui correspond à l'index du perdant et celui du gagnant du tour
         """
         nb_maximum_lancer = 3
-        for i in range(self.nb_joueurs):
+        for i in range(self.nb_total_joueurs):
             n = 3 if i == 0 else nb_maximum_lancer
-            pos = (self.premier + i) % self.nb_joueurs
-            Partie.interface.afficher("Tour du {}".format(self.joueurs[pos].nom))
+            pos = (self.premier + i) % self.nb_total_joueurs
+            Partie.interface.afficher("Tour de {}".format(self.joueurs[pos].nom))
             nb_lancer = self.joueurs[pos].jouer_tour(n)
             if i == 0:
                 nb_maximum_lancer = nb_lancer
@@ -127,7 +135,7 @@ class Partie:
                     gagnant = pos
 
             Partie.interface.afficher()
-        assert self.nb_joueurs > 1 and gagnant != perdant
+        assert self.nb_total_joueurs > 1 and gagnant != perdant
         v = min(self.joueurs[gagnant].combinaison_actuelle.valeur, self.joueurs[gagnant].nb_jetons)
         self.joueurs[perdant].ajouter_jetons(v)
         self.joueurs[gagnant].retirer_jetons(v)
@@ -151,7 +159,7 @@ class Partie:
             self.jouer_tour_premiere_phase()
 
         i = 0
-        while (i < self.nb_joueurs):
+        while (i < self.nb_total_joueurs):
             if self.verifier_gagnant(self.joueurs[i]):
                 Partie.interface.afficher("{} a terminé la partie.".format(self.joueurs[i].nom))
                 self.retirer_joueur(i)
@@ -160,7 +168,7 @@ class Partie:
             else:
                 i += 1
 
-        for i in range(self.nb_joueurs):
+        for i in range(self.nb_total_joueurs):
             if self.verifier_perdant(self.joueurs[i]):
                 Partie.interface.afficher("Fin de la partie. {} a perdu et a tous les jetons du pot.".format(self.joueurs[i].nom))
                 return
@@ -203,7 +211,7 @@ class Partie:
         :return:
         """
         self.joueurs.pop(position)
-        self.nb_joueurs -= 1
+        self.nb_total_joueurs -= 1
 
     def afficher_recapitulatif(self):
         """
@@ -222,8 +230,8 @@ class Partie:
         assert (sum([j.nb_jetons for j in self.joueurs]) + self.nb_jetons_du_pot) == NOMBRE_DE_JETONS_DU_JEU, \
             "Le nombre de jetons dans le jeu est actuellement différent de {}".format(NOMBRE_DE_JETONS_DU_JEU)
 
-        assert len(self.joueurs) == self.nb_joueurs, "Le nombre de joueurs dans la partie est inexacte"
-        assert self.premier < self.nb_joueurs
+        assert len(self.joueurs) == self.nb_total_joueurs, "Le nombre de joueurs dans la partie est inexacte"
+        assert self.premier < self.nb_total_joueurs
 
 
 

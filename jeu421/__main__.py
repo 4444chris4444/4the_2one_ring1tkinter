@@ -2,6 +2,8 @@ from random import seed
 from jeu421.partie import Partie
 from jeu421.interface import Interface
 from tkinter import *
+from tkinter import messagebox
+
 
 if __name__ == "__main__":
     #seed(52) # pour correction ou tests (fixer un seed)
@@ -54,16 +56,19 @@ if __name__ == "__main__":
 
 
     x = 2
+    y = 0
 
-    accueil()
+#    accueil()
 
-    reglement()
+#    reglement()
 
-    page_accueil()
+ #   page_accueil()
 
     def jouer1():
         global x
         x=2
+
+
 
     def jouer2():
         global x
@@ -73,29 +78,45 @@ if __name__ == "__main__":
         global x
         x=4
 
+    def cpu0():
+        global y
+        y=0
+
+    def cpu1():
+        global y
+        y=1
+
+
+    def combine_funcs(*functions):
+        def combined_func(*arg1, **arg2):
+            for f in functions:
+                f(*arg1, **arg2)
+
+        return combined_func
+
 
 
     def ecran_nb_joueur():
         fen1 = Tk()
         titre = Label(fen1, text="---- NOMBRES DE JOUEURS----")
         titre.grid(padx=250, pady=250)
-        bouton1 = Button(fen1, text="2", command= jouer1)
+        bouton1 = Button(fen1, text="2", command= combine_funcs(jouer1, fen1.destroy))
         bouton1.grid()
-        bouton2 = Button(fen1, text="3", command=jouer2)
+        bouton2 = Button(fen1, text="3", command= combine_funcs(jouer2, fen1.destroy))
         bouton2.grid()
-        bouton3 = Button(fen1, text="4", command=jouer3)
+        bouton3 = Button(fen1, text="4", command= combine_funcs(jouer3, fen1.destroy))
         bouton3.grid()
         bouton4 = Button(fen1, text="Cliquez sur ce bouton après la sélection du nombre de joueur. Si vous ne sélectionner rien et cliquez sur ce bouton, il y aura automatiquement 2 joueurs.", command=fen1.destroy)
         bouton4.grid()
         fen1.mainloop()
 
-    def ecran_nb_joueur_bot():
+    def ecran_nb_cpu():
         fen1 = Tk()
         titre = Label(fen1, text="---- Voulez-vous jouer contre un ordinateur----")
         titre.grid(padx=250, pady=250)
-        bouton1 = Button(fen1, text="Oui")
+        bouton1 = Button(fen1, text="Oui", command= combine_funcs(cpu1, fen1.destroy))
         bouton1.grid()
-        bouton2 = Button(fen1, text="Non")
+        bouton2 = Button(fen1, text="Non", command= combine_funcs(cpu0, fen1.destroy))
         bouton2.grid()
         bouton3 = Button(fen1, text="Cliquez sur ce bouton après la sélection de votre choix. Si vous ne sélectionner rien et cliquez sur ce bouton, il n'y aura pas d'ordinateur.", command=fen1.destroy)
         bouton3.grid()
@@ -103,17 +124,9 @@ if __name__ == "__main__":
 
     ecran_nb_joueur()
 
-    ecran_nb_joueur_bot()
-
-    print(x)
-    if x==2:
-        jeu = Partie(2)
-        jeu.jouer()
-    if x==3:
-        jeu = Partie(3)
-        jeu.jouer()
-    if x == 4:
-        jeu = Partie(4)
-        jeu.jouer()
+    ecran_nb_cpu()
+    print("Nombre de joueurs :", x, "Avec un ordinateur?", bool(y==1))
+    jeu = Partie(x, y)
+    jeu.jouer()
 
 
