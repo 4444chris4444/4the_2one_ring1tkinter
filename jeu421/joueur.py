@@ -164,10 +164,12 @@ class JoueurAlgo(Joueur):
             tirage = self.lancer_des(nb_des_a_lancer-len(combinaison_actuelle))
             nombre_tirage += 1
             Joueur.interface.afficher("Lancé {} = {}".format(nombre_tirage, tirage))
-            if nb_lancer_max == 1:
+            combinaison_actuelle.sort(reverse=True)
+            if combinaison_actuelle == [4,2,1]:
+                nombre_tirage = lancers_max
+            elif nb_lancer_max == 1:
                 combinaison_actuelle = tirage
-            elif nombre_tirage >= 1:
-                lancer_1 = tirage
+            elif 1<=nombre_tirage<3:
                 for i in range(len(tirage)):
                     if tirage[i] in combinaison_gagnante:
                         if tirage[i] not in combinaison_actuelle:
@@ -182,7 +184,6 @@ class JoueurAlgo(Joueur):
                 # Si c'est le dernier lancer, on est pris avec nos derniers résultats.
                 for i in range(len(tirage)):
                     combinaison_actuelle.append(tirage[i])
-        combinaison_actuelle.sort(reverse=True)
         self.combinaison_actuelle = combinaison_actuelle
         Joueur.combinaison_actuelle = Combinaison(combinaison_actuelle)
         return combinaison_actuelle
