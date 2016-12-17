@@ -234,22 +234,20 @@ class Partie:
         Une fois la charge terminé, la décharge débute par le dernier perdant de la charge.
         Le jeu se termine dès qu'un joueur a tous les jetons de la partie
         """
-        try:
-            Partie.création_ficher_données(self)
-        except IOError:
-            self.determiner_premier_lanceur()
-            terminer = False
-            fen1 = Tk()
-            titre = Label(fen1, text="---- Début de la décharge----")
-            titre.grid(padx=250, pady=250)
-            bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
-            bouton2.grid()
-            bouton3 = Button(fen1, text="Quitter", command=exit)
-            bouton3.grid()
-            fen1.mainloop()
-            #Partie.interface.afficher("*{:^40s}*".format("Début de la charge"))
-            while self.nb_jetons_du_pot > 0:
-                self.jouer_tour_premiere_phase()
+        Partie.création_ficher_données(self)
+        self.determiner_premier_lanceur()
+        terminer = False
+        fen1 = Tk()
+        titre = Label(fen1, text="---- Début de la décharge----")
+        titre.grid(padx=250, pady=250)
+        bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
+        bouton2.grid()
+        bouton3 = Button(fen1, text="Quitter", command=exit)
+        bouton3.grid()
+        fen1.mainloop()
+        #Partie.interface.afficher("*{:^40s}*".format("Début de la charge"))
+        while self.nb_jetons_du_pot > 0:
+            self.jouer_tour_premiere_phase()
 
             i = 0
             while (i < self.nb_total_joueurs):
