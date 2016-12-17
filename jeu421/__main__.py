@@ -61,6 +61,7 @@ if __name__ == "__main__":
 
     reglement()
 
+
     page_accueil()
 
     def jouer1():

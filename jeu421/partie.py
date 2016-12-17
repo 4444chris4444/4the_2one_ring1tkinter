@@ -69,7 +69,7 @@ class Partie:
                 fen1 = Tk()
                 titre = Label(fen1, text="Préparez-vous à lancer les dés")
                 titre.grid(padx=250, pady=250)
-                bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
+                bouton2 = Button(fen1, text="Lancer les dés", command=fen1.destroy)
                 bouton2.grid()
                 bouton3 = Button(fen1, text="Quitter", command=exit)
                 bouton3.grid()
@@ -78,7 +78,7 @@ class Partie:
                                                  #" Enter pour lancer!".format(self.joueurs[i].nom))
                 valeur = self.joueurs[i].lancer_des(1)[0]
                 fen1 = Tk()
-                titre = Label(fen1, text="Résultat du lancer:{}\n".format(valeur))
+                titre = Label(fen1, text="Résultat du lancer : {}\n".format(valeur))
                 titre.grid(padx=250, pady=250)
                 bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
                 bouton2.grid()

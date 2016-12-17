@@ -89,7 +89,7 @@ result.grid(row=3, column=0, columnspan=3)
 dice_list = create_dice()
 # start with an empty canvas
 dice_list[0].grid(row=1, column=0, pady=5)
-button1 = tk.Button(root, text="Press me", command=click)
+button1 = tk.Button(root, text="Rouler le dé", command=click)
 button1.grid(row=2, column=0, pady=3)
 # start of program event loop
 root.mainloop()
