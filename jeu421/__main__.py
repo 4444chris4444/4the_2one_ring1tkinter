@@ -25,23 +25,20 @@ if __name__ == "__main__":
         titre.grid(padx=250, pady=250)
         bouton = Button(fen1, text="Continuer", command=fen1.destroy)
         bouton.grid()
+        bouton3 = Button(fen1, text="Quitter", command=exit)
+        bouton3.grid()
         fen1.mainloop()
-
-
-
-    def reglement_site():
-        print("Pour voir les règlements, simplement aller sur le site http://www.regles-de-jeux.com/regle-du-421/")
-
-
 
     def reglement():
         fen1 = Tk()
         titre = Label(fen1, text="---- RÈGLEMENTS ----")
         titre.grid(padx=250, pady=250)
-        bouton1 = Button(fen1, text="Voir les règlements", command=reglement_site)
-        bouton1.grid()
-        bouton2 = Button(fen1, text="Ne pas voir les règlements", command=fen1.destroy)
+        Instruction = Label(fen1, text="Pour voir les règlements, simplement aller sur le site http://www.regles-de-jeux.com/regle-du-421/", font='size, 20')
+        Instruction.grid()
+        bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
         bouton2.grid()
+        bouton3 = Button(fen1, text="Quitter", command=exit)
+        bouton3.grid()
         fen1.mainloop()
 
     def page_accueil():
@@ -52,17 +49,19 @@ if __name__ == "__main__":
         bouton1.grid()
         bouton2 = Button(fen1, text="Options")
         bouton2.grid()
+        bouton3 = Button(fen1, text="Quitter",command=exit)
+        bouton3.grid()
         fen1.mainloop()
 
 
     x = 2
     y = 0
 
-#    accueil()
+    accueil()
 
-#    reglement()
+    reglement()
 
- #   page_accueil()
+    page_accueil()
 
     def jouer1():
         global x
@@ -106,7 +105,7 @@ if __name__ == "__main__":
         bouton2.grid()
         bouton3 = Button(fen1, text="4", command= combine_funcs(jouer3, fen1.destroy))
         bouton3.grid()
-        bouton4 = Button(fen1, text="Cliquez sur ce bouton après la sélection du nombre de joueur. Si vous ne sélectionner rien et cliquez sur ce bouton, il y aura automatiquement 2 joueurs.", command=fen1.destroy)
+        bouton4 = Button(fen1, text="Quitter", command=exit)
         bouton4.grid()
         fen1.mainloop()
 
@@ -118,14 +117,29 @@ if __name__ == "__main__":
         bouton1.grid()
         bouton2 = Button(fen1, text="Non", command= combine_funcs(cpu0, fen1.destroy))
         bouton2.grid()
-        bouton3 = Button(fen1, text="Cliquez sur ce bouton après la sélection de votre choix. Si vous ne sélectionner rien et cliquez sur ce bouton, il n'y aura pas d'ordinateur.", command=fen1.destroy)
+        bouton3 = Button(fen1, text="Quitter", command=exit)
         bouton3.grid()
         fen1.mainloop()
 
     ecran_nb_joueur()
 
     ecran_nb_cpu()
-    print("Nombre de joueurs :", x, "Avec un ordinateur?", bool(y==1))
+
+    def nb_joueur_nb_bot():
+        fen1 = Tk()
+        titre = Label(fen1, text="---- Récapitulatif----")
+        titre.grid(padx=250, pady=250)
+        information=Label(fen1, text="Nombre de joueurs :"+ str(x) + "" + "Avec un ordinateur?" + str(bool(y==1)))
+        information.grid()
+        bouton1 = Button(fen1, text="Continuer", command=fen1.destroy)
+        bouton1.grid()
+        bouton3 = Button(fen1, text="Quitter", command=exit)
+        bouton3.grid()
+        fen1.mainloop()
+
+
+    nb_joueur_nb_bot()
+
     jeu = Partie(x, y)
     jeu.jouer()
 

@@ -2,6 +2,7 @@ from jeu421.interface import Interface
 from jeu421.combinaison import *
 from jeu421.joueur import Joueur
 from jeu421.joueur import JoueurAlgo
+from tkinter import *
 import os
 
 
@@ -217,14 +218,30 @@ class Partie:
         """
         Affiche un tableau récapitulatif de la partie
         """
-        n = 40
-        Partie.interface.afficher()
-        Partie.interface.afficher("{}\n|{:^38}|\n{}".format("_"*n, "Récapitulatif de la partie", "-"*n))
-        s = "|{:^27s}|{:^10d}|"
-        Partie.interface.afficher(s.format("POT DE JETONS", self.nb_jetons_du_pot))
+        fen1 = Tk()
+        titre = Label(fen1, text="---- Récapitulatif de la partie ----")
+        titre.grid(padx=250, pady=250)
+        bouton = Button(fen1, text="Continuer", command=fen1.destroy)
+        bouton.grid()
+        bouton3 = Button(fen1, text="Quitter", command=exit)
+        bouton3.grid()
+
+        #n = 40
+        #Partie.interface.afficher()
+        #Partie.interface.afficher("{}\n|{:^38}|\n{}".format("_"*n, "Récapitulatif de la partie", "-"*n))
+        #s = "|{:^27s}|{:^10d}|"
+        pot_de_jetons = Label(fen1, text="---- Pots de jetons ----")
+        pot_de_jetons.grid()
+        pot_de_jetons2 = Label(fen1, text=str(self.nb_jetons_du_pot) + ":" + " " + "jetons")
+        pot_de_jetons2.grid()
+
+        #Partie.interface.afficher(s.format("POT DE JETONS", self.nb_jetons_du_pot))
         for j in sorted(self.joueurs, key=lambda x: x.nb_jetons, reverse=True):
-            Partie.interface.afficher(s.format(j.nom, j.nb_jetons))
-        Partie.interface.afficher("{}\n".format("-" * n))
+            joueur=Label(fen1,text=str(j.nom) + ":" + " " + str(j.nb_jetons))
+            joueur.grid()
+            #Partie.interface.afficher(s.format(j.nom, j.nb_jetons))
+        #Partie.interface.afficher("{}\n".format("-" * n))
+        fen1.mainloop()
 
     def verifie_invariants(self):
         assert (sum([j.nb_jetons for j in self.joueurs]) + self.nb_jetons_du_pot) == NOMBRE_DE_JETONS_DU_JEU, \
