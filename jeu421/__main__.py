@@ -140,10 +140,7 @@ if __name__ == "__main__":
 
 
     nb_joueur_nb_bot()
-try :
     jeu = Partie(x, y)
-except NameError :
-    print ('valeurs non defini')
     jeu.jouer()
 
 
