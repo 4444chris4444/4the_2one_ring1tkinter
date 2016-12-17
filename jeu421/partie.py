@@ -64,6 +64,7 @@ class Partie:
                 titre.grid(padx=250, pady=250)
                 bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
                 bouton2.grid()
+                bouton4 = Button(fen1, text="Statistiques accumulées", command=os.startfile())
                 bouton3 = Button(fen1, text="Quitter", command=exit)
                 bouton3.grid()
                 fen1.mainloop()
