@@ -167,7 +167,6 @@ class JoueurAlgo(Joueur):
     Classe représentant un joueur fictif qui applique une stratégie de type 1. Il visera donc toujours à obtenir la
     combinaison du 421. Cette classe hérite de la classe Joueur.
     """
-
     def __init__(self):
 
         super().__init__(self)
