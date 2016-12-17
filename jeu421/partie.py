@@ -44,16 +44,48 @@ class Partie:
         L'attribut premier de la classe est initialisé à l'appel de cette méthode
         :return:
         """
-        Partie.interface.afficher("*{:^40s}*".format("Détermination du premier joueur"))
+        fen1 = Tk()
+        titre = Label(fen1, text="---- Détermination du premier joueur----")
+        titre.grid(padx=250, pady=250)
+        bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
+        bouton2.grid()
+        bouton3 = Button(fen1, text="Quitter", command=exit)
+        bouton3.grid()
+        fen1.mainloop()
+        #Partie.interface.afficher("*{:^40s}*".format("Détermination du premier joueur"))
         concernes = list(range(self.nb_total_joueurs))
         while len(concernes) > 1:
             best_valeur = 7
             premiers = []
             for i in concernes:
-                Partie.interface.demander_entree("Tour de {}: Appuyer sur la touche"
-                                                 " Enter pour lancer!".format(self.joueurs[i].nom))
+                fen1 = Tk()
+                titre = Label(fen1, text="Tour de {}".format(self.joueurs[i].nom))
+                titre.grid(padx=250, pady=250)
+                bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
+                bouton2.grid()
+                bouton3 = Button(fen1, text="Quitter", command=exit)
+                bouton3.grid()
+                fen1.mainloop()
+                fen1 = Tk()
+                titre = Label(fen1, text="Préparez-vous à lancer les dés")
+                titre.grid(padx=250, pady=250)
+                bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
+                bouton2.grid()
+                bouton3 = Button(fen1, text="Quitter", command=exit)
+                bouton3.grid()
+                fen1.mainloop()
+                #Partie.interface.demander_entree("Tour de {}: Appuyer sur la touche"
+                                                 #" Enter pour lancer!".format(self.joueurs[i].nom))
                 valeur = self.joueurs[i].lancer_des(1)[0]
-                Partie.interface.afficher("Résultat du lancer:{}\n".format(valeur))
+                fen1 = Tk()
+                titre = Label(fen1, text="Résultat du lancer:{}\n".format(valeur))
+                titre.grid(padx=250, pady=250)
+                bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
+                bouton2.grid()
+                bouton3 = Button(fen1, text="Quitter", command=exit)
+                bouton3.grid()
+                fen1.mainloop()
+                #Partie.interface.afficher("Résultat du lancer:{}\n".format(valeur))
                 if valeur < best_valeur:
                     best_valeur = valeur
                     premiers = [i]
@@ -62,9 +94,25 @@ class Partie:
 
             concernes = premiers
             if len(concernes) > 1:
-                Partie.interface.afficher("Égalité entre les joueurs: {}".format(", ".join([str(i+1) for i in concernes])))
+                fen1 = Tk()
+                titre = Label(fen1, text="Égalité entre les joueurs: {}".format(", ".join([str(i+1) for i in concernes])))
+                titre.grid(padx=250, pady=250)
+                bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
+                bouton2.grid()
+                bouton3 = Button(fen1, text="Quitter", command=exit)
+                bouton3.grid()
+                fen1.mainloop()
+                #Partie.interface.afficher("Égalité entre les joueurs: {}".format(", ".join([str(i+1) for i in concernes])))
         self.premier = concernes[0]
-        Partie.interface.afficher("{} sera le premier lanceur\n".format(self.joueurs[self.premier].nom))
+        fen1 = Tk()
+        titre = Label(fen1, text="{} sera le premier lanceur\n".format(self.joueurs[self.premier].nom))
+        titre.grid(padx=250, pady=250)
+        bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
+        bouton2.grid()
+        bouton3 = Button(fen1, text="Quitter", command=exit)
+        bouton3.grid()
+        fen1.mainloop()
+        #Partie.interface.afficher("{} sera le premier lanceur\n".format(self.joueurs[self.premier].nom))
 
     def jouer_tour_premiere_phase(self):
         """
@@ -77,12 +125,28 @@ class Partie:
         nb_maximum_lancer = 1
         for i in range(self.nb_total_joueurs):
             pos = (self.premier+i) % self.nb_total_joueurs
-            Partie.interface.afficher("Tour du {}".format(self.joueurs[pos].nom))
+            fen1 = Tk()
+            titre = Label(fen1,text="Tour du {}".format(self.joueurs[pos].nom))
+            titre.grid(padx=250, pady=250)
+            bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
+            bouton2.grid()
+            bouton3 = Button(fen1, text="Quitter", command=exit)
+            bouton3.grid()
+            fen1.mainloop()
+            #Partie.interface.afficher("Tour du {}".format(self.joueurs[pos].nom))
             self.joueurs[pos].jouer_tour(nb_maximum_lancer=nb_maximum_lancer)
 
             # Si le joueur a pigé une nénette, il doit prendre deux jetons dans le pot
             if self.joueurs[pos].combinaison_actuelle.est_nenette():
-                print("Vous venez de piger une nénette. Vous devez prendre automatiquement deux(2) jetons")
+                fen1 = Tk()
+                titre = Label(fen1, text="Vous venez de piger une nénette. Vous devez prendre automatiquement deux(2) jetons")
+                titre.grid(padx=250, pady=250)
+                bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
+                bouton2.grid()
+                bouton3 = Button(fen1, text="Quitter", command=exit)
+                bouton3.grid()
+                fen1.mainloop()
+                #print("Vous venez de piger une nénette. Vous devez prendre automatiquement deux(2) jetons")
                 v = min(2, self.nb_jetons_du_pot)
                 self.joueurs[pos].ajouter_jetons(v)
                 self.nb_jetons_du_pot -= v
@@ -120,13 +184,30 @@ class Partie:
         for i in range(self.nb_total_joueurs):
             n = 3 if i == 0 else nb_maximum_lancer
             pos = (self.premier + i) % self.nb_total_joueurs
-            Partie.interface.afficher("Tour de {}".format(self.joueurs[pos].nom))
+            fen1 = Tk()
+            titre = Label(fen1, text="Tour de {}".format(self.joueurs[pos].nom))
+            titre.grid(padx=250, pady=250)
+            bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
+            bouton2.grid()
+            bouton3 = Button(fen1, text="Quitter", command=exit)
+            bouton3.grid()
+            fen1.mainloop()
+            #Partie.interface.afficher("Tour de {}".format(self.joueurs[pos].nom))
             nb_lancer = self.joueurs[pos].jouer_tour(n)
             if i == 0:
                 nb_maximum_lancer = nb_lancer
                 gagnant, perdant = pos, pos
-                Partie.interface.afficher("Le premier premier lanceur ayant fait {}, le nombre de "
+                fen1 = Tk()
+                titre = Label(fen1, text="Le premier premier lanceur ayant fait {}, le nombre de "
                       "lancées pour ce tour est {}".format(nb_lancer, nb_lancer))
+                titre.grid(padx=250, pady=250)
+                bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
+                bouton2.grid()
+                bouton3 = Button(fen1, text="Quitter", command=exit)
+                bouton3.grid()
+                fen1.mainloop()
+                #Partie.interface.afficher("Le premier premier lanceur ayant fait {}, le nombre de "
+                      #"lancées pour ce tour est {}".format(nb_lancer, nb_lancer))
             else:
                 if self.joueurs[pos].combinaison_actuelle < self.joueurs[perdant].combinaison_actuelle:
                     perdant = pos
@@ -155,14 +236,30 @@ class Partie:
         Partie.création_ficher_données(self)
         self.determiner_premier_lanceur()
         terminer = False
-        Partie.interface.afficher("*{:^40s}*".format("Début de la charge"))
+        fen1 = Tk()
+        titre = Label(fen1, text="---- Début de la décharge----")
+        titre.grid(padx=250, pady=250)
+        bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
+        bouton2.grid()
+        bouton3 = Button(fen1, text="Quitter", command=exit)
+        bouton3.grid()
+        fen1.mainloop()
+        #Partie.interface.afficher("*{:^40s}*".format("Début de la charge"))
         while self.nb_jetons_du_pot > 0:
             self.jouer_tour_premiere_phase()
 
         i = 0
         while (i < self.nb_total_joueurs):
             if self.verifier_gagnant(self.joueurs[i]):
-                Partie.interface.afficher("{} a terminé la partie.".format(self.joueurs[i].nom))
+                fen1 = Tk()
+                titre = Label(fen1, text="{} a terminé la partie.".format(self.joueurs[i].nom))
+                titre.grid(padx=250, pady=250)
+                bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
+                bouton2.grid()
+                bouton3 = Button(fen1, text="Quitter", command=exit)
+                bouton3.grid()
+                fen1.mainloop()
+                #Partie.interface.afficher("{} a terminé la partie.".format(self.joueurs[i].nom))
                 self.retirer_joueur(i)
                 if self.premier > i:
                     self.premier -= 1
@@ -171,22 +268,55 @@ class Partie:
 
         for i in range(self.nb_total_joueurs):
             if self.verifier_perdant(self.joueurs[i]):
-                Partie.interface.afficher("Fin de la partie. {} a perdu et a tous les jetons du pot.".format(self.joueurs[i].nom))
+                fen1 = Tk()
+                titre = Label(fen1, text="Fin de la partie. {} a perdu et a tous les jetons du pot.".format(self.joueurs[i].nom))
+                titre.grid(padx=250, pady=250)
+                bouton3 = Button(fen1, text="Quitter", command=exit)
+                bouton3.grid()
+                fen1.mainloop()
+                #Partie.interface.afficher("Fin de la partie. {} a perdu et a tous les jetons du pot.".format(self.joueurs[i].nom))
                 return
 
-        Partie.interface.afficher("*{:^40s}*".format("Début de la décharge"))
+        #Partie.interface.afficher("*{:^40s}*".format("Début de la décharge"))
+        fen1 = Tk()
+        titre = Label(fen1, text="---- Début de la décharge----")
+        titre.grid(padx=250, pady=250)
+        bouton1 = Button(fen1, text="Continuer", command=fen1.destroy)
+        bouton1.grid()
+        bouton3 = Button(fen1, text="Quitter", command=exit)
+        bouton3.grid()
+        fen1.mainloop()
         while not terminer:
             perdant, gagnant = self.jouer_tour_deuxieme_phase()
             sortir_gagnant = self.verifier_gagnant(self.joueurs[gagnant])
             perdant_trouver = self.verifier_perdant(self.joueurs[perdant])
             if sortir_gagnant:
-                Partie.interface.afficher("{} a terminé la partie.".format(self.joueurs[gagnant].nom))
+                fen1 = Tk()
+                titre = Label(fen1, text="---- Un joueur est gagnant et a été retiré de la partie----")
+                titre.grid(padx=250, pady=250)
+                bouton2=Button(fen1,text="Continuer", command=fen1.destroy)
+                bouton2.grid()
+                bouton1 = Button(fen1, text="Quitter", command=exit)
+                bouton1.grid()
+                titre2 = Label(fen1, text="{} a terminé la partie.".format(self.joueurs[gagnant].nom))
+                titre2.grid()
+                fen1.mainloop()
+                #Partie.interface.afficher("{} a terminé la partie.".format(self.joueurs[gagnant].nom))
                 self.retirer_joueur(gagnant)
                 if self.premier > gagnant:
                     self.premier -= 1
 
             if perdant_trouver:
-                Partie.interface.afficher("Fin de la partie. {} a perdu et a tous les jetons du pot.".format(self.joueurs[self.premier].nom))
+                fen1 = Tk()
+                titre = Label(fen1, text="---- Fin de la partie----")
+                titre.grid(padx=250, pady=250)
+                bouton1 = Button(fen1, text="Quitter", command=exit)
+                bouton1.grid()
+                fen1.mainloop()
+                titre2 = Label(fen1, text="Fin de la partie. {} a perdu et a tous les jetons du pot.".format(self.joueurs[self.premier].nom))
+                titre2.grid()
+                fen1.mainloop()
+                #Partie.interface.afficher("Fin de la partie. {} a perdu et a tous les jetons du pot.".format(self.joueurs[self.premier].nom))
                 terminer = True
 
     def verifier_gagnant(self, joueur):

@@ -1,6 +1,7 @@
 from jeu421.interface import Interface
 from jeu421.combinaison import *
 from random import randint
+from tkinter import *
 
 
 class Joueur:
@@ -50,9 +51,25 @@ class Joueur:
                 self.combinaison_actuelle = Combinaison(resultat_lancer)
                 i=3
             else:
-                Joueur.interface.demander_entree("Appuyer sur la touche Enter pour lancer!")
+                fen1 = Tk()
+                titre = Label(fen1, text="Préparez-vous à lancer les dés")
+                titre.grid(padx=250, pady=250)
+                bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
+                bouton2.grid()
+                bouton3 = Button(fen1, text="Quitter", command=exit)
+                bouton3.grid()
+                fen1.mainloop()
+                #Joueur.interface.demander_entree("Appuyer sur la touche Enter pour lancer!")
                 temp = self.lancer_des(nb_des_a_lancer)
-                Joueur.interface.afficher("Lancé {} = {}".format(i+1, temp))
+                fen1 = Tk()
+                titre = Label(fen1, text="Lancé {} = {}".format(i+1, temp))
+                titre.grid(padx=250, pady=250)
+                bouton1 = Button(fen1, text="Continuer", command=fen1.destroy)
+                bouton1.grid()
+                bouton3 = Button(fen1, text="Quitter", command=exit)
+                bouton3.grid()
+                fen1.mainloop()
+                #Joueur.interface.afficher("Lancé {} = {}".format(i+1, temp))
                 resultat_lancer += temp
                 possibilte_de_relancer = (i < nb_maximum_lancer - 1)
                 if possibilte_de_relancer:
@@ -65,8 +82,16 @@ class Joueur:
                             resultat_lancer.remove(v)
             i += 1
         self.combinaison_actuelle = Combinaison(resultat_lancer)
-        Joueur.interface.afficher("Combinaison finale = {}, soit {} points".format(self.combinaison_actuelle,
-                                                           self.combinaison_actuelle.valeur))
+        fen1 = Tk()
+        titre = Label(fen1, text="Combinaison finale = {}, soit {} points".format(self.combinaison_actuelle,self.combinaison_actuelle.valeur))
+        titre.grid(padx=250, pady=250)
+        bouton1 = Button(fen1, text="Continuer", command=fen1.destroy)
+        bouton1.grid()
+        bouton3 = Button(fen1, text="Quitter", command=exit)
+        bouton3.grid()
+        fen1.mainloop()
+        #Joueur.interface.afficher("Combinaison finale = {}, soit {} points".format(self.combinaison_actuelle,
+                                                           #self.combinaison_actuelle.valeur))
         return i
 
     def ajouter_jetons(self, nb_jetons):
@@ -163,7 +188,15 @@ class JoueurAlgo(Joueur):
             # On ne veut pas faire plus que 3 lancers.
             tirage = self.lancer_des(nb_des_a_lancer-len(combinaison_actuelle))
             nombre_tirage += 1
-            Joueur.interface.afficher("Lancé {} = {}".format(nombre_tirage, tirage))
+            fen1 = Tk()
+            titre = Label(fen1, text="Lancé {} = {}".format(nombre_tirage, tirage))
+            titre.grid(padx=250, pady=250)
+            bouton1 = Button(fen1, text="Continuer", command=fen1.destroy)
+            bouton1.grid()
+            bouton3 = Button(fen1, text="Quitter", command=exit)
+            bouton3.grid()
+            fen1.mainloop()
+            #Joueur.interface.afficher("Lancé {} = {}".format(nombre_tirage, tirage))
             combinaison_actuelle.sort(reverse=True)
             if combinaison_actuelle == [4,2,1]:
                 nombre_tirage = lancers_max

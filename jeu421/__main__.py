@@ -129,7 +129,7 @@ if __name__ == "__main__":
         fen1 = Tk()
         titre = Label(fen1, text="---- Récapitulatif----")
         titre.grid(padx=250, pady=250)
-        information=Label(fen1, text="Nombre de joueurs :"+ str(x) + "" + "Avec un ordinateur?" + str(bool(y==1)))
+        information=Label(fen1, text="Nombre de joueurs :"+ str(x) + " " + "Avec un ordinateur?" + " " + str(bool(y==1)))
         information.grid()
         bouton1 = Button(fen1, text="Continuer", command=fen1.destroy)
         bouton1.grid()
