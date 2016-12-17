@@ -168,7 +168,6 @@ class JoueurAlgo(Joueur):
     combinaison du 421. Cette classe hérite de la classe Joueur.
     """
     def __init__(self):
-
         super().__init__(self)
 
     def choix_421(self, nb_lancer_max):
