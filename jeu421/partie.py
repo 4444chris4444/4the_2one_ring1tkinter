@@ -3,6 +3,7 @@ from jeu421.combinaison import *
 from jeu421.joueur import Joueur
 from jeu421.joueur import JoueurAlgo
 from tkinter import *
+from tkinter import messagebox
 import os
 
 
@@ -233,91 +234,93 @@ class Partie:
         Une fois la charge terminé, la décharge débute par le dernier perdant de la charge.
         Le jeu se termine dès qu'un joueur a tous les jetons de la partie
         """
-        Partie.création_ficher_données(self)
-        self.determiner_premier_lanceur()
-        terminer = False
-        fen1 = Tk()
-        titre = Label(fen1, text="---- Début de la décharge----")
-        titre.grid(padx=250, pady=250)
-        bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
-        bouton2.grid()
-        bouton3 = Button(fen1, text="Quitter", command=exit)
-        bouton3.grid()
-        fen1.mainloop()
-        #Partie.interface.afficher("*{:^40s}*".format("Début de la charge"))
-        while self.nb_jetons_du_pot > 0:
-            self.jouer_tour_premiere_phase()
+        try:
+            Partie.création_ficher_données(self)
+        except IOError:
+            self.determiner_premier_lanceur()
+            terminer = False
+            fen1 = Tk()
+            titre = Label(fen1, text="---- Début de la décharge----")
+            titre.grid(padx=250, pady=250)
+            bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
+            bouton2.grid()
+            bouton3 = Button(fen1, text="Quitter", command=exit)
+            bouton3.grid()
+            fen1.mainloop()
+            #Partie.interface.afficher("*{:^40s}*".format("Début de la charge"))
+            while self.nb_jetons_du_pot > 0:
+                self.jouer_tour_premiere_phase()
 
-        i = 0
-        while (i < self.nb_total_joueurs):
-            if self.verifier_gagnant(self.joueurs[i]):
-                fen1 = Tk()
-                titre = Label(fen1, text="{} a terminé la partie.".format(self.joueurs[i].nom))
-                titre.grid(padx=250, pady=250)
-                bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
-                bouton2.grid()
-                bouton3 = Button(fen1, text="Quitter", command=exit)
-                bouton3.grid()
-                fen1.mainloop()
-                #Partie.interface.afficher("{} a terminé la partie.".format(self.joueurs[i].nom))
-                self.retirer_joueur(i)
-                if self.premier > i:
-                    self.premier -= 1
-            else:
-                i += 1
+            i = 0
+            while (i < self.nb_total_joueurs):
+                if self.verifier_gagnant(self.joueurs[i]):
+                    fen1 = Tk()
+                    titre = Label(fen1, text="{} a terminé la partie.".format(self.joueurs[i].nom))
+                    titre.grid(padx=250, pady=250)
+                    bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
+                    bouton2.grid()
+                    bouton3 = Button(fen1, text="Quitter", command=exit)
+                    bouton3.grid()
+                    fen1.mainloop()
+                    #Partie.interface.afficher("{} a terminé la partie.".format(self.joueurs[i].nom))
+                    self.retirer_joueur(i)
+                    if self.premier > i:
+                        self.premier -= 1
+                else:
+                    i += 1
 
-        for i in range(self.nb_total_joueurs):
-            if self.verifier_perdant(self.joueurs[i]):
-                fen1 = Tk()
-                titre = Label(fen1, text="Fin de la partie. {} a perdu et a tous les jetons du pot.".format(self.joueurs[i].nom))
-                titre.grid(padx=250, pady=250)
-                bouton3 = Button(fen1, text="Quitter", command=exit)
-                bouton3.grid()
-                fen1.mainloop()
-                #Partie.interface.afficher("Fin de la partie. {} a perdu et a tous les jetons du pot.".format(self.joueurs[i].nom))
-                return
+            for i in range(self.nb_total_joueurs):
+                if self.verifier_perdant(self.joueurs[i]):
+                    fen1 = Tk()
+                    titre = Label(fen1, text="Fin de la partie. {} a perdu et a tous les jetons du pot.".format(self.joueurs[i].nom))
+                    titre.grid(padx=250, pady=250)
+                    bouton3 = Button(fen1, text="Quitter", command=exit)
+                    bouton3.grid()
+                    fen1.mainloop()
+                    #Partie.interface.afficher("Fin de la partie. {} a perdu et a tous les jetons du pot.".format(self.joueurs[i].nom))
+                    return
 
-        #Partie.interface.afficher("*{:^40s}*".format("Début de la décharge"))
-        fen1 = Tk()
-        titre = Label(fen1, text="---- Début de la décharge----")
-        titre.grid(padx=250, pady=250)
-        bouton1 = Button(fen1, text="Continuer", command=fen1.destroy)
-        bouton1.grid()
-        bouton3 = Button(fen1, text="Quitter", command=exit)
-        bouton3.grid()
-        fen1.mainloop()
-        while not terminer:
-            perdant, gagnant = self.jouer_tour_deuxieme_phase()
-            sortir_gagnant = self.verifier_gagnant(self.joueurs[gagnant])
-            perdant_trouver = self.verifier_perdant(self.joueurs[perdant])
-            if sortir_gagnant:
-                fen1 = Tk()
-                titre = Label(fen1, text="---- Un joueur est gagnant et a été retiré de la partie----")
-                titre.grid(padx=250, pady=250)
-                bouton2=Button(fen1,text="Continuer", command=fen1.destroy)
-                bouton2.grid()
-                bouton1 = Button(fen1, text="Quitter", command=exit)
-                bouton1.grid()
-                titre2 = Label(fen1, text="{} a terminé la partie.".format(self.joueurs[gagnant].nom))
-                titre2.grid()
-                fen1.mainloop()
-                #Partie.interface.afficher("{} a terminé la partie.".format(self.joueurs[gagnant].nom))
-                self.retirer_joueur(gagnant)
-                if self.premier > gagnant:
-                    self.premier -= 1
+            #Partie.interface.afficher("*{:^40s}*".format("Début de la décharge"))
+            fen1 = Tk()
+            titre = Label(fen1, text="---- Début de la décharge----")
+            titre.grid(padx=250, pady=250)
+            bouton1 = Button(fen1, text="Continuer", command=fen1.destroy)
+            bouton1.grid()
+            bouton3 = Button(fen1, text="Quitter", command=exit)
+            bouton3.grid()
+            fen1.mainloop()
+            while not terminer:
+                perdant, gagnant = self.jouer_tour_deuxieme_phase()
+                sortir_gagnant = self.verifier_gagnant(self.joueurs[gagnant])
+                perdant_trouver = self.verifier_perdant(self.joueurs[perdant])
+                if sortir_gagnant:
+                    fen1 = Tk()
+                    titre = Label(fen1, text="---- Un joueur est gagnant et a été retiré de la partie----")
+                    titre.grid(padx=250, pady=250)
+                    bouton2=Button(fen1,text="Continuer", command=fen1.destroy)
+                    bouton2.grid()
+                    bouton1 = Button(fen1, text="Quitter", command=exit)
+                    bouton1.grid()
+                    titre2 = Label(fen1, text="{} a terminé la partie.".format(self.joueurs[gagnant].nom))
+                    titre2.grid()
+                    fen1.mainloop()
+                    #Partie.interface.afficher("{} a terminé la partie.".format(self.joueurs[gagnant].nom))
+                    self.retirer_joueur(gagnant)
+                    if self.premier > gagnant:
+                        self.premier -= 1
 
-            if perdant_trouver:
-                fen1 = Tk()
-                titre = Label(fen1, text="---- Fin de la partie----")
-                titre.grid(padx=250, pady=250)
-                bouton1 = Button(fen1, text="Quitter", command=exit)
-                bouton1.grid()
-                fen1.mainloop()
-                titre2 = Label(fen1, text="Fin de la partie. {} a perdu et a tous les jetons du pot.".format(self.joueurs[self.premier].nom))
-                titre2.grid()
-                fen1.mainloop()
-                #Partie.interface.afficher("Fin de la partie. {} a perdu et a tous les jetons du pot.".format(self.joueurs[self.premier].nom))
-                terminer = True
+                if perdant_trouver:
+                    fen1 = Tk()
+                    titre = Label(fen1, text="---- Fin de la partie----")
+                    titre.grid(padx=250, pady=250)
+                    bouton1 = Button(fen1, text="Quitter", command=exit)
+                    bouton1.grid()
+                    fen1.mainloop()
+                    titre2 = Label(fen1, text="Fin de la partie. {} a perdu et a tous les jetons du pot.".format(self.joueurs[self.premier].nom))
+                    titre2.grid()
+                    fen1.mainloop()
+                    #Partie.interface.afficher("Fin de la partie. {} a perdu et a tous les jetons du pot.".format(self.joueurs[self.premier].nom))
+                    terminer = True
 
     def verifier_gagnant(self, joueur):
         """
@@ -387,12 +390,15 @@ class Partie:
         Permet d'enregistrer divers attributs d'objets de joueurs dans un ficher text tout au long de l'exécution du programme
 
         """
-        fichier_stats = open("421_statistiques.txt", "w")   #Créer et ouvre un .txt en écriture
-        for j in (self.joueurs):                            #Inscrit les noms des joueurs dans le .txt
-            infos_joueur = "Nom: " + str(j.nom) + "Premier lancer :" + "Nombre de jetons" + "\n"
-            fichier_stats.write(infos_joueur)
-           # for i in (self.joueurs):
-        fichier_stats.close()
+        try :
+            fichier_stats = open("421_statistiques.txt", "w")   #Créer et ouvre un .txt en écriture
+            for j in (self.joueurs):                            #Inscrit les noms des joueurs dans le .txt
+                infos_joueur = "Nom: " + str(j.nom) + "Premier lancer :" + "Nombre de jetons" + "\n"
+                fichier_stats.write(infos_joueur)
+               # for i in (self.joueurs):
+            fichier_stats.close()
+        except IOError:
+            messagebox.showerror("fichier non crée")
 
     #def obtenir_stats(self):
 
