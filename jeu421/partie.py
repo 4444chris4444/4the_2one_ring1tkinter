@@ -386,6 +386,10 @@ class Partie:
 
 
     def MAJ_fichier_donnees(self):
+        """
+
+        :return:
+        """
 
         try:
             with open("421_statistiques.txt", "a+") as fichier_données:
