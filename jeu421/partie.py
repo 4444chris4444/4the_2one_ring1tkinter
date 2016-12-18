@@ -385,7 +385,7 @@ class Partie:
     """"""
 
 
-    def MAJ_fichier_donnees(self, element1, element2, element3):
+    def MAJ_fichier_donnees(self):
 
         try:
             with open("421_statistiques.txt", "a+") as fichier_données:
