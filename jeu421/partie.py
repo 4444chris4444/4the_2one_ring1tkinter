@@ -396,3 +396,31 @@ class Partie:
                 fichier_données.write("Evenement\n")
         except IOError:
             messagebox.showerror("Fichier non créé")
+
+    def changer_noms(self,event):
+        global mascarade
+        if self.entree.get()=="":
+            self.chaine.configure(text="Nom du joueur inchangé")
+
+        else:
+            self.joueurs[mascarade].nom = self.entree.get()
+            self.chaine.configure(text="Nouveau nom du joueur:" + " " + str(self.entree.get()))
+    mascarade=0
+    def fenetre_changement_de_nom(self):
+        global mascarade
+        for i in range(0,self.nb_joueurs):
+            mascarade=i
+            fen1 = Tk()
+            titre = Label(fen1, text="Renter le nouveau nom du joueur {} et appuyez sur ENTER. Si vous laisser la case vide ou si vous cliquez sur continuer sans rien écrire dans le champ de texte, le joueur gardera son nom courant".format(self.joueurs[i].nom))
+            titre.grid(padx=250, pady=250)
+            self.entree = Entry(fen1)
+            self.entree.bind("<Return>", self.changer_noms)
+            self.chaine = Label(fen1)
+            self.chaine.grid()
+            print(self.entree.get())
+            self.entree.grid()
+            bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
+            bouton2.grid()
+            bouton3 = Button(fen1, text="Quitter", command=exit)
+            bouton3.grid()
+            fen1.mainloop()

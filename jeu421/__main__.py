@@ -139,8 +139,22 @@ if __name__ == "__main__":
         fen1.mainloop()
 
 
+
     nb_joueur_nb_bot()
     jeu = Partie(x, y)
+
+    def changer_de_nom():
+        fen1 = Tk()
+        titre = Label(fen1, text="Voulez-vous changer les noms des joueurs?")
+        titre.grid(padx=250, pady=250)
+        bouton1 = Button(fen1, text="Oui", command=combine_funcs(fen1.destroy, jeu.fenetre_changement_de_nom))
+        bouton1.grid()
+        bouton2 = Button(fen1, text="Non", command=fen1.destroy)
+        bouton2.grid()
+        bouton3 = Button(fen1, text="Quitter", command=exit)
+        bouton3.grid()
+        fen1.mainloop()
+    changer_de_nom()
     jeu.jouer()
 
 

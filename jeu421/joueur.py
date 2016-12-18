@@ -4,6 +4,7 @@ from random import randint
 from tkinter import *
 
 
+
 class Joueur:
     """
     Classe représentant un joueur de 421. Un joueur a les attributs
@@ -219,6 +220,7 @@ class JoueurAlgo(Joueur):
         self.combinaison_actuelle = combinaison_actuelle
         Joueur.combinaison_actuelle = Combinaison(combinaison_actuelle)
         return combinaison_actuelle
+
 
 #cpu_1 = JoueurAlgo(2)
 #print(cpu_1.choix_421(tri=True))
