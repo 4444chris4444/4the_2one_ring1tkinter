@@ -64,7 +64,6 @@ class Partie:
                 titre.grid(padx=250, pady=250)
                 bouton2 = Button(fen1, text="Continuer", command=fen1.destroy)
                 bouton2.grid()
-                bouton4 = Button(fen1, text="Statistiques accumulées", command=os.startfile())
                 bouton3 = Button(fen1, text="Quitter", command=exit)
                 bouton3.grid()
                 fen1.mainloop()
@@ -235,7 +234,7 @@ class Partie:
         Une fois la charge terminé, la décharge débute par le dernier perdant de la charge.
         Le jeu se termine dès qu'un joueur a tous les jetons de la partie
         """
-        Partie.création_ficher_données(self)
+        self.MAJ_fichier_donnees()
         self.determiner_premier_lanceur()
         terminer = False
         fen1 = Tk()
@@ -383,22 +382,13 @@ class Partie:
         assert self.premier < self.nb_total_joueurs
 
 
+    """"""
 
-    def création_ficher_données(self):
-        """
-        Permet d'enregistrer divers attributs d'objets de joueurs dans un ficher text tout au long de l'exécution du programme
 
-        """
-        try :
-            fichier_stats = open("421_statistiques.txt", "w")   #Créer et ouvre un .txt en écriture
-            for j in (self.joueurs):                            #Inscrit les noms des joueurs dans le .txt
-                infos_joueur = "Nom: " + str(j.nom) + "Premier lancer :" + "Nombre de jetons" + "\n"
-                fichier_stats.write(infos_joueur)
-               # for i in (self.joueurs):
-            fichier_stats.close()
+    def MAJ_fichier_donnees(self, element1, element2, element3):
+
+        try:
+            with open("421_statistiques.txt", "a+") as fichier_données:
+                fichier_données.write("Evenement\n")
         except IOError:
-            messagebox.showerror("fichier non crée")
-
-    #def obtenir_stats(self):
-
-
+            messagebox.showerror("Fichier non créé")
